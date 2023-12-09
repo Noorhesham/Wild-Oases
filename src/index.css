@@ -165,10 +165,16 @@ svg {
   color: var(--color-grey-400);
   transition: all 0.3s;
 }
-svg .active{
+ .active svg{
   color: var(--color-brand-600);
 }
-
+.item:hover>svg{
+  fill: var(--color-brand-600);
+}
+.active button{
+  background-color: var(--color-brand-600);
+  color: var(--color-brand-50);
+}
 img {
   max-width: 100%;
 

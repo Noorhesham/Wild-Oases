@@ -1,38 +1,15 @@
-import styled from "styled-components";
 import { format, isToday } from "date-fns";
+import { HiArrowDownOnSquare, HiEye } from "react-icons/hi2";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import Menus from "../../ui/Menus";
+import { useNavigate } from "react-router";
 
-const Cabin = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-600);
-  font-family: "Sono";
-`;
 
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
-
-const Amount = styled.div`
-  font-family: "Sono";
-  font-weight: 500;
-`;
 
 function BookingRow({
   booking: {
@@ -48,23 +25,22 @@ function BookingRow({
     cabins: { name: cabinName },
   },
 }) {
+  const navigate=useNavigate();
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
   };
-
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <div className="text-2xl font-semibold text-gray-600 font-mono ">{cabinName}</div>
 
-      <Stacked>
+      <div className=" flex flex-col gap-1 first:font-bold last:text-gray-500 text-xl">
         <span>{guestName}</span>
         <span>{email}</span>
-      </Stacked>
+      </div>
 
-      <Stacked>
-        <span>
+      <div className=" flex flex-col gap-1 first:font-bold last:text-gray-500 text-xl">        <span>
           {isToday(new Date(startDate))
             ? "Today"
             : formatDistanceFromNow(startDate)}{" "}
@@ -74,11 +50,18 @@ function BookingRow({
           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
           {format(new Date(endDate), "MMM dd yyyy")}
         </span>
-      </Stacked>
+      </div>
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+      <div className=" font-mono font-semibold">{formatCurrency(totalPrice)}</div>
+      <Menus.Menu>
+        <Menus.Toggle id={bookingId} />
+        <Menus.List id={bookingId} >
+           <Menus.Button onClick={()=>navigate(`/bookings/${bookingId}`)} icon={<HiEye/>}> See details</Menus.Button> 
+         {status==="unconfirmed"&&<Menus.Button onClick={()=>navigate(`/checkin/${bookingId}`)} icon={<HiArrowDownOnSquare/>}> Check in</Menus.Button> }
+        </Menus.List>
+      </Menus.Menu>
     </Table.Row>
   );
 }

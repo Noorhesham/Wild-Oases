@@ -1,50 +1,50 @@
-import styled from "styled-components";
+import {HiXMark} from "react-icons/hi2";
+import {createPortal} from "react-dom"
+import { cloneElement, createContext , useContext} from "react";
+import {useState} from "react";
+import { useCloseModal } from "../hooks/useCloseModal";
 
-const StyledModal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--color-grey-0);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: 3.2rem 4rem;
-  transition: all 0.5s;
-`;
+const ModalContext = createContext();
 
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: var(--backdrop-color);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  transition: all 0.5s;
-`;
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
 
-const Button = styled.button`
-  background: none;
-  border: none;
-  padding: 0.4rem;
-  border-radius: var(--border-radius-sm);
-  transform: translateX(0.8rem);
-  transition: all 0.2s;
-  position: absolute;
-  top: 1.2rem;
-  right: 1.9rem;
-
-  &:hover {
-    background-color: var(--color-grey-100);
+  const close = () =>{
+    setOpenName('');
+    console.log('closed')
   }
+  const open = setOpenName;
 
-  & svg {
-    width: 2.4rem;
-    height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
-    color: var(--color-grey-500);
-  }
-`;
+  return (
+    <ModalContext.Provider value={{ openName, close, open }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open(opensWindowName) });
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+
+  const ref=useCloseModal(close,true)
+
+  if (name !== openName) return null;
+  return createPortal(
+    <div className=" fixed top-0 left-0 w-[100%] h-[100vh] backdrop-blur-md transition-all duration-75 ">
+      <div ref={ref} className=" fixed top-[50%] left-[50%] translate-x-[-50%] z-10  translate-y-[-50%] bg-white rounded-lg shadow-lg py-14 px-16 ">
+      <button onClick={close} className=" focus:ring-2 ring-cyan-500 bg-none border-none p-2 rounded-sm translate-x-2 transition-all duration-75 absolute top-[1.2rem] right-[1.9rem] hover:bg-gray-100">
+        <HiXMark className=" w-10 h-10 fill-gray-500 text-gray-500"/>
+      </button>
+       <div> {cloneElement(children,{CloseForm:close})}</div>
+      </div>
+    </div>,document.body
+  );
+}
+Modal.Open=Open
+Modal.Window=Window
+export default Modal;

@@ -1,20 +1,17 @@
-import {useState} from "react"
+import AddCabin from "../features/cabins/AddCabin";
 import CabinTable from "../features/cabins/CabinTable";
-import CreateCabinForm from "../features/cabins/CreateCabinForm"
-import Button from "../ui/Button";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
 function Cabins() {
-  const [showForm,setshowForm]=useState(false)
   return (
     <>
     <div className=" flex justify-between">
     <h1 className=" font-semibold text-6xl ">All Cabins</h1>
-<p>Filter / Sort</p>
-</div>
+    <CabinTableOperations/>
+  </div>
   <div>
     <CabinTable/>
   </div>
-    <Button onClick={()=>setshowForm(show=>!show)} variation="primary" >add new cabin</Button>
-    {showForm&&<CreateCabinForm/>}
+    <AddCabin/>
   </>
 
   );

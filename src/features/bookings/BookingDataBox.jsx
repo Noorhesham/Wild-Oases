@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { format, isToday } from "date-fns";
 import {
   HiOutlineChatBubbleBottomCenterText,
@@ -12,94 +11,7 @@ import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
 
-const StyledBookingDataBox = styled.section`
-  /* Box */
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-100);
-  border-radius: var(--border-radius-md);
 
-  overflow: hidden;
-`;
-
-const Header = styled.header`
-  background-color: var(--color-brand-500);
-  padding: 2rem 4rem;
-  color: #e0e7ff;
-  font-size: 1.8rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  svg {
-    height: 3.2rem;
-    width: 3.2rem;
-  }
-
-  & div:first-child {
-    display: flex;
-    align-items: center;
-    gap: 1.6rem;
-    font-weight: 600;
-    font-size: 1.8rem;
-  }
-
-  & span {
-    font-family: "Sono";
-    font-size: 2rem;
-    margin-left: 4px;
-  }
-`;
-
-const Section = styled.section`
-  padding: 3.2rem 4rem 1.2rem;
-`;
-
-const Guest = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  margin-bottom: 1.6rem;
-  color: var(--color-grey-500);
-
-  & p:first-of-type {
-    font-weight: 500;
-    color: var(--color-grey-700);
-  }
-`;
-
-const Price = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.6rem 3.2rem;
-  border-radius: var(--border-radius-sm);
-  margin-top: 2.4rem;
-
-  background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
-  color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
-
-  & p:last-child {
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    font-weight: 600;
-  }
-
-  svg {
-    height: 2.4rem;
-    width: 2.4rem;
-    color: currentColor !important;
-  }
-`;
-
-const Footer = styled.footer`
-  padding: 1.6rem 4rem;
-  font-size: 1.2rem;
-  color: var(--color-grey-500);
-  text-align: right;
-`;
 
 // A purely presentational component
 function BookingDataBox({ booking }) {
@@ -120,12 +32,16 @@ function BookingDataBox({ booking }) {
   } = booking;
 
   return (
-    <StyledBookingDataBox>
-      <Header>
-        <div>
-          <HiOutlineHomeModern />
+    <section className=" bg-white border-gray-100 rounded-lg">
+      <header
+        className=" bg-[color:var(--color-brand-500)] py-10 px-20 text-[#e0e7ff] text-[1.8rem] font-semibold 
+      flex items-center justify-between"
+      >
+        <div className="flex items-center gap-7 font-semibold text-[1.8rem]">
+          <HiOutlineHomeModern className=" h-[3.2rem] w-[3.2rem] text-white " />
           <p>
-            {numNights} nights in Cabin <span>{cabinName}</span>
+            {numNights} nights in Cabin{" "}
+            <span className=" ml-2 text-4xl font-mono">{cabinName}</span>
           </p>
         </div>
 
@@ -136,35 +52,36 @@ function BookingDataBox({ booking }) {
             : formatDistanceFromNow(startDate)}
           ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
         </p>
-      </Header>
+      </header>
 
-      <Section>
-        <Guest>
+      <section className=" pt-12 pr-16 pb-5 ">
+        <div className=" flex items-center gap-3 mb-7 text-gray-500">
           {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
-          <p>
+          <p className=" font-semibold text-gray-700">
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>
           <span>&bull;</span>
           <p>{email}</p>
           <span>&bull;</span>
           <p>National ID {nationalID}</p>
-        </Guest>
+        </div>
 
         {observations && (
           <DataItem
-            icon={<HiOutlineChatBubbleBottomCenterText />}
+            icon={<HiOutlineChatBubbleBottomCenterText className=" w-8 h-8 text-[color:var(--color-brand-600)]" />}
             label="Observations"
           >
             {observations}
           </DataItem>
         )}
 
-        <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
+        <DataItem icon={<HiOutlineCheckCircle className=" w-8 h-8 text-[color:var(--color-brand-600)]" />} label="Breakfast included?">
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
-
-        <Price isPaid={isPaid}>
-          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
+        <div  className={`${isPaid?'bg-[color:var(--color-green-100)] text-[color:var(--color-green-700)]'
+        :'bg-[color:var(--color-green-700)] text-[color:var(--color-green-100)]'}
+        flex items-center justify-between py-7 px-14 rounded-sm mt-10`} isPaid={isPaid}>
+          <DataItem icon={<HiOutlineCurrencyDollar className=" w-8 h-8 text-[color:var(--color-brand-600)]" />} label={`Total price`}>
             {formatCurrency(totalPrice)}
 
             {hasBreakfast &&
@@ -173,14 +90,13 @@ function BookingDataBox({ booking }) {
               )} breakfast)`}
           </DataItem>
 
-          <p>{isPaid ? "Paid" : "Will pay at property"}</p>
-        </Price>
-      </Section>
-
-      <Footer>
+          <p className="uppercase text-[1.4rem] font-bold">{isPaid ? "Paid" : "Will pay at property"}</p>
+        </div>
+      </section>
+      <footer className=" py-10 px-20 text-[1.4rem] text-gray-500 text-right">
         <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
-      </Footer>
-    </StyledBookingDataBox>
+      </footer>
+    </section>
   );
 }
 

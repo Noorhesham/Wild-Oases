@@ -7,7 +7,7 @@ function AppLayout() {
     <div className=" grid grid-cols-[30%_1fr] grid-rows-[auto_1fr] h-screen">
       <Header />
       <Sidebar /> 
-      <main className=" py-24 px-20 bg-gray-50">
+      <main className=" py-24 px-20 bg-gray-50 overflow-scroll">
         <div className=" max-w-[120rem] my-0 mx-auto flex flex-col gap-16 ">
       <Outlet />
         </div>

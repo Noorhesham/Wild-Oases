@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import BookingDataBox from "../../features/bookings/BookingDataBox";
-
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
+
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "../bookings/useBooking";
+import Spinner from "../../ui/Spinner";
+import Tag from "../../ui/Tag";
 
 const Box = styled.div`
   /* Box */
@@ -19,9 +18,9 @@ const Box = styled.div`
 
 function CheckinBooking() {
   const moveBack = useMoveBack();
-
-  const booking = {};
-
+  const {booking,isLoading}= useBooking();
+  if(isLoading) return <Spinner/>
+  console.log(booking)
   const {
     id: bookingId,
     guests,
@@ -30,25 +29,24 @@ function CheckinBooking() {
     hasBreakfast,
     numNights,
   } = booking;
-
-  function handleCheckin() {}
-
+  function handleCheckin(){}
   return (
-    <>
-      <Row type="horizontal">
-        <Heading as="h1">Check in booking #{bookingId}</Heading>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-      </Row>
+    <section>
+      <div className="  flex  justify-between  items-center">
+        <h1 className="font-semibold text-6xl mb-20">Check in booking #{bookingId}</h1>
+        <button className="text-[color:var(--color-brand-600)] font-semibold text-center transition-all duration-100 bg-none
+        border-none rounded-sm hover:text-[color:var(--color-brand-700)] active:text-[color:var(--color-brand-700)]  " onClick={moveBack}>&larr; Back</button>
+      </div>
 
       <BookingDataBox booking={booking} />
 
-      <ButtonGroup>
-        <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
+      <div className=" flex justify-end gap-5">
+        <Button variation="primary" onClick={handleCheckin}>Check in booking #{bookingId}</Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
-      </ButtonGroup>
-    </>
+      </div>
+    </section>
   );
 }
 

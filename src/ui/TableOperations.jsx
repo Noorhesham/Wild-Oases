@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+function TableOperations({children}) {
+  return (
+    <div className='flex items-center gap-7 '>
+      {children}
+    </div>
+  )
+}
 
-const TableOperations = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-`;
-
-export default TableOperations;
+export default TableOperations

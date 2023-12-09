@@ -5,8 +5,8 @@ import TableOperations from "../../ui/TableOperations";
 function BookingTableOperations() {
   return (
     <TableOperations>
-      <Filter
-        filterField="status"
+      <Filter 
+        name="status"
         options={[
           { value: "all", label: "All" },
           { value: "checked-out", label: "Checked out" },

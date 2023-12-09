@@ -1,25 +1,11 @@
-import styled, { css } from "styled-components";
+function Form({children,type}) {
+  const style=type==="Modal"?"w-[80rem]":'py-5 px-10  bg-white border-gray-100 rounded-md ';
+  return (
+    <Form className={` text-[1.4rem] ${style}`} >
+      {children}
+    </Form>
+  )
+}
 
-const Form = styled.form`
-  ${(props) =>
-    props.type !== "modal" &&
-    css`
-      padding: 2.4rem 4rem;
+export default Form
 
-      /* Box */
-      background-color: var(--color-grey-0);
-      border: 1px solid var(--color-grey-100);
-      border-radius: var(--border-radius-md);
-    `}
-
-  ${(props) =>
-    props.type === "modal" &&
-    css`
-      width: 80rem;
-    `}
-    
-  overflow: hidden;
-  font-size: 1.4rem;
-`;
-
-export default Form;

@@ -1,15 +1,9 @@
-import styled from "styled-components";
+function Select({options,value,onChange}) {
+  return (
+    <select value={value} onChange={onChange} className=" text-[1.4rem] py-3 px-5 border-gray-300 rounded-sm bg-white font-semibold shadow-sm" >
+      {options.map(option=><option value={option.value} key={option.value}>{option.label}</option>)}
+    </select>
+  )
+}
 
-const StyledSelect = styled.select`
-  font-size: 1.4rem;
-  padding: 0.8rem 1.2rem;
-  border: 1px solid
-    ${(props) =>
-      props.type === "white"
-        ? "var(--color-grey-100)"
-        : "var(--color-grey-300)"};
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-grey-0);
-  font-weight: 500;
-  box-shadow: var(--shadow-sm);
-`;
+export default Select
